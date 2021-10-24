@@ -25,6 +25,12 @@ const id = urlSearchParams.get('id');
       
        
       document.querySelector("#title").textContent =  response.name;
+      document.querySelector(".item__img").innerHTML = `<img src="${response.imageUrl}" alt="${response.altTxt}"/>`;
+      document.querySelector("#price").textContent = response.price;
+      document.querySelector("#description").textContent = response.description;
+      document.querySelector("#colors").innerHTML = ` <option value="vert">${response.colors[0]}</option>
+      <option value="blanc">${response.colors[1]}</option>  <option value="vert">${response.colors[2]}</option>`
+ 
 
  } ) ;
  
