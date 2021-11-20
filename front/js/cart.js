@@ -128,26 +128,19 @@ function changeQuantity(event, id, color) {
 //Récupération des données formulaire utilisateurs                                                                                  
 
 let prenom = document.querySelector('#firstName');
-let prenomValue = prenom.value;
 prenom.setAttribute("pattern", "^[a-zA-Z]+[^0-9]");
 
 let nom = document.querySelector('#lastName');
-let nomValue = nom.value;
 nom.setAttribute("pattern", "^[a-zA-Z]+[^0-9]");
 
 let address = document.querySelector('#address');
-let addressValue = address.value;
 address.setAttribute("max-length", "60");
 
 let city = document.querySelector('#city');
-let cityValue = city.value;
 city.setAttribute("pattern", "^[a-zA-Z]+[^0-9]");
 
 let email = document.querySelector('#email');
-let emailValue = email.value;
 email.setAttribute("pattern", "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-].+$");
-
-
 
 
 // Récupération de l'input firstName et ajout de la Regex
