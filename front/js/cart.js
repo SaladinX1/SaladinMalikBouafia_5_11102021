@@ -1,4 +1,5 @@
 // requête fetch pour récupérer les données manquantes pour affichage panier 
+
 let produitsDansPanier = JSON.parse(localStorage.getItem("produits"));
 
 for (let p = 0; p < produitsDansPanier.length; p++) {
@@ -9,10 +10,6 @@ for (let p = 0; p < produitsDansPanier.length; p++) {
       return data.json();
     })
     .then(response => {
-
-      console.log(response);
-
-
 
       document.querySelector("#cart__items").innerHTML += `
                                                          
@@ -44,13 +41,9 @@ for (let p = 0; p < produitsDansPanier.length; p++) {
 
 }
 
-
-
-
+// Affichage du total produit et prix total
 
 for (let p = 0; p < produitsDansPanier.length; p++) {
-
-
 
   fetch(`http://localhost:3000/api/products/${produitsDansPanier[p].id}`)
     .then(data => {
@@ -59,8 +52,6 @@ for (let p = 0; p < produitsDansPanier.length; p++) {
     .then(response => {
 
       document.querySelector(".cart__price").innerHTML += `
-
-                             
                                <p>Total (<span id="totalQuantity">${produitsDansPanier[p].quantity}               
                                 </span> articles) : <span id="totalPrice"> ${response.price * produitsDansPanier[p].quantity} </span> €</p>
                              `
@@ -72,9 +63,7 @@ for (let p = 0; p < produitsDansPanier.length; p++) {
 
 
 function deleteItem(event, id, color) {
-  console.log("Result :", id, color);
   //supression  de l'article dans la partie visuel
-
   let deleteDiv = event.target.closest('section section');
 
   deleteDiv.remove();
@@ -169,15 +158,14 @@ document.querySelector('#firstName').addEventListener('change', (e) => {
   if (/^[a-zA-Z]+[^0-9]/.test(prenom) == false) {
 
     validationForm.firstNameValid = false;
-    //submit.disabled = true;
     document.querySelector('#firstNameErrorMsg').textContent = "Veuillez sélectionnez un prénom avec seulement avec des lettres minuscules ou majuscules";
     let error = document.querySelector('#firstName');
     error.classList.add('border');
     error.style.border = " 1px solid red";
 
   } else {
+
     validationForm.firstNameValid = true;
-    //submit.disabled = false;
     document.querySelector('#firstNameErrorMsg').textContent = "✅";
     let error = document.querySelector('#firstName');
     error.classList.add('border');
@@ -195,7 +183,6 @@ document.querySelector('#lastName').addEventListener('change', (e) => {
   if (/^[a-zA-Z]+[^0-9]/.test(nom) == false) {
 
     validationForm.lastNameValid = false;
-    //submit.disabled = true;
     document.querySelector('#lastNameErrorMsg').textContent = "Veuillez sélectionnez un nom avec seulement avec des lettres minuscules ou majuscules";
     let error = document.querySelector('#lastName');
     error.classList.add('border');
@@ -204,7 +191,6 @@ document.querySelector('#lastName').addEventListener('change', (e) => {
   } else {
 
     validationForm.lastNameValid = true;
-    //submit.disabled = false;
     document.querySelector('#lastNameErrorMsg').textContent = "✅";
     let error = document.querySelector('#lastName');
     error.classList.add('border');
@@ -221,7 +207,7 @@ document.querySelector('#address').addEventListener('change', (e) => {
 
   if (address == "") {
 
-    //submit.disabled = true;
+
     validationForm.adressValid = false;
     document.querySelector('#addressErrorMsg').textContent = "Veuillez inscrire une adresse postale valide avec des caractères alphanumériques seulement";
     let error = document.querySelector('#address');
@@ -232,7 +218,6 @@ document.querySelector('#address').addEventListener('change', (e) => {
   } else {
 
     validationForm.adressValid = true;
-    //submit.disabled = false;
     document.querySelector('#addressErrorMsg').textContent = "✅";
     let error = document.querySelector('#address');
     error.classList.add('border');
@@ -249,9 +234,7 @@ document.querySelector('#city').addEventListener('change', (e) => {
 
   if (/^[a-zA-Z]+[^0-9]/.test(city) == false) {
 
-
     validationForm.cityValid = false;
-    //submit.disabled = true;
     document.querySelector('#cityErrorMsg').textContent = "Veuillez sélectionnez une ville avec seulement avec des lettres minuscules ou majuscules";
     let error = document.querySelector('#city');
     error.classList.add('border');
@@ -260,7 +243,6 @@ document.querySelector('#city').addEventListener('change', (e) => {
   } else {
 
     validationForm.cityValid = true;
-    //submit.disabled = false;
     document.querySelector('#cityErrorMsg').textContent = "✅";
     let error = document.querySelector('#city');
     error.classList.add('border');
@@ -277,7 +259,6 @@ document.querySelector('#email').addEventListener('change', (e) => {
   if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-].+$/.test(email) == false) {
 
     validationForm.mailValid = false;
-    //document.querySelector("#order").disabled = true;
     document.querySelector('#emailErrorMsg').textContent = "Veuillez inscrire une adresse éléctronique seulement avec un '@' et des caractères alphanumériques et/ou spéciaux ( - , _ , .)";
     let error = document.querySelector('#email');
     error.classList.add('border');
@@ -286,7 +267,6 @@ document.querySelector('#email').addEventListener('change', (e) => {
   } else {
 
     validationForm.mailValid = true;
-    //submit.disabled = false;
     document.querySelector('#emailErrorMsg').textContent = "✅";
     let error = document.querySelector('#email');
     error.classList.add('border');
@@ -304,8 +284,6 @@ let validationForm = {
 }
 
 
-
-//document.querySelector("#order").disabled = false;
 const submit = document.querySelector("#order");
 submit.setAttribute('method', 'POST');
 
@@ -318,14 +296,12 @@ submit.addEventListener('click', (e) => {
 
   if (validationForm.firstNameValid == true && validationForm.lastNameValid == true && validationForm.adressValid == true && validationForm.cityValid == true && validationForm.mailValid == true) {
 
-
     let productsId = [];
 
     for (let prod of JSON.parse(localStorage.getItem("produits"))) {
 
       productsId.push(prod.id)
     };
-
 
 
     let order = {
@@ -339,33 +315,19 @@ submit.addEventListener('click', (e) => {
       products: productsId
     };
 
-
-
-
-    console.log("Petit message ", order);
     fetch(`http://localhost:3000/api/products/order`, {
         method: "POST",
         body: JSON.stringify(order),
-
         headers: {
           "Content-Type": "application/json",
           'Accept': 'application/json',
-
         },
-
       })
       .then(res => {
-
         return res.json()
       })
       .then((data => {
-        console.log("Reponse de la requete", data);
-
-
         location.replace(`confirmation.html?orderId=${data.orderId}`)
-
-
-
       }))
       .catch((err) => {
         alert(" une erreur est survenue :( : " + err);
@@ -376,8 +338,6 @@ submit.addEventListener('click', (e) => {
 
   } else {
 
-    //document.querySelector("#order").disabled = true;
-
     let el = document.createElement('div');
     let el2 = document.querySelector('.cart__order__form');
     el2.appendChild(el);
@@ -386,31 +346,4 @@ submit.addEventListener('click', (e) => {
     el.style.padding = "top : 15px";
     el.innerHTML = "Merci de bien vouloir remplir tout les champs s'il vous plaît ";
   }
-
 });
-
-
-
-/*const post = fetch("http://localhost:3000/api/products/order");
-
-
-
-
-
-post.then(async (response) => {
-
-  try {
-
-    console.log("response");
-    console.log(response);
-
-    const post2 = await response.json();
-    console.log("post2");
-    console.log(post2);
-
-  } catch (e) {
-    console.log(e)
-
-  }
-
-})*/
