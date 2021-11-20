@@ -24,9 +24,9 @@
                                                              <img src="${item.imageUrl}" alt="${item.altTxt}>
                                                                <h3 class="productName">${item.name}</h3>
                                                                <p> color : ${item.colors} </p>
-                                                               <p> id : ${item.id}</p>
+                                                               <p> id : ${item._id}</p>
                                                                   <p class="productDescription">${item.description}</p>
-                                                                   <p> ${item.price}</p>
+                                                                   <p> ${item.price}€</p>
 
                                                                    </article>
                                                                    </a>
