@@ -123,9 +123,14 @@ function changeQuantity(event, id, color) {
     if (panierContent[i].id == id && panierContent[i].color == color) {
 
       panierContent[i].quantity = event.target.value;
+
+
     }
   }
   localStorage.setItem("produits", JSON.stringify(panierContent));
+
+  document.querySelectorAll('#totalQuantity').textContent =
+    `<p>Total (<span id="totalQuantity">${produitsDansPanier[p].quantity} </span> `
 }
 
 
@@ -163,7 +168,7 @@ document.querySelector('#firstName').addEventListener('change', (e) => {
 
   if (/^[a-zA-Z]+[^0-9]/.test(prenom) == false) {
 
-
+    validationForm.firstNameValid = false;
     //submit.disabled = true;
     document.querySelector('#firstNameErrorMsg').textContent = "Veuillez sélectionnez un prénom avec seulement avec des lettres minuscules ou majuscules";
     let error = document.querySelector('#firstName');
@@ -171,7 +176,7 @@ document.querySelector('#firstName').addEventListener('change', (e) => {
     error.style.border = " 1px solid red";
 
   } else {
-    validationForm.firstNameValid == true;
+    validationForm.firstNameValid = true;
     //submit.disabled = false;
     document.querySelector('#firstNameErrorMsg').textContent = "✅";
     let error = document.querySelector('#firstName');
@@ -189,7 +194,7 @@ document.querySelector('#lastName').addEventListener('change', (e) => {
 
   if (/^[a-zA-Z]+[^0-9]/.test(nom) == false) {
 
-
+    validationForm.lastNameValid = false;
     //submit.disabled = true;
     document.querySelector('#lastNameErrorMsg').textContent = "Veuillez sélectionnez un nom avec seulement avec des lettres minuscules ou majuscules";
     let error = document.querySelector('#lastName');
@@ -198,7 +203,7 @@ document.querySelector('#lastName').addEventListener('change', (e) => {
 
   } else {
 
-    validationForm.lastNameValid == true;
+    validationForm.lastNameValid = true;
     //submit.disabled = false;
     document.querySelector('#lastNameErrorMsg').textContent = "✅";
     let error = document.querySelector('#lastName');
@@ -217,7 +222,7 @@ document.querySelector('#address').addEventListener('change', (e) => {
   if (address == "") {
 
     //submit.disabled = true;
-
+    validationForm.adressValid = false;
     document.querySelector('#addressErrorMsg').textContent = "Veuillez inscrire une adresse postale valide avec des caractères alphanumériques seulement";
     let error = document.querySelector('#address');
     error.classList.add('border');
@@ -226,7 +231,7 @@ document.querySelector('#address').addEventListener('change', (e) => {
 
   } else {
 
-    validationForm.adressValid == true;
+    validationForm.adressValid = true;
     //submit.disabled = false;
     document.querySelector('#addressErrorMsg').textContent = "✅";
     let error = document.querySelector('#address');
@@ -245,6 +250,7 @@ document.querySelector('#city').addEventListener('change', (e) => {
   if (/^[a-zA-Z]+[^0-9]/.test(city) == false) {
 
 
+    validationForm.cityValid = false;
     //submit.disabled = true;
     document.querySelector('#cityErrorMsg').textContent = "Veuillez sélectionnez une ville avec seulement avec des lettres minuscules ou majuscules";
     let error = document.querySelector('#city');
@@ -253,7 +259,7 @@ document.querySelector('#city').addEventListener('change', (e) => {
 
   } else {
 
-    validationForm.cityValid == true;
+    validationForm.cityValid = true;
     //submit.disabled = false;
     document.querySelector('#cityErrorMsg').textContent = "✅";
     let error = document.querySelector('#city');
@@ -270,7 +276,7 @@ document.querySelector('#email').addEventListener('change', (e) => {
 
   if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-].+$/.test(email) == false) {
 
-
+    validationForm.mailValid = false;
     //document.querySelector("#order").disabled = true;
     document.querySelector('#emailErrorMsg').textContent = "Veuillez inscrire une adresse éléctronique seulement avec un '@' et des caractères alphanumériques et/ou spéciaux ( - , _ , .)";
     let error = document.querySelector('#email');
@@ -279,7 +285,7 @@ document.querySelector('#email').addEventListener('change', (e) => {
 
   } else {
 
-    validationForm.mailValid == true;
+    validationForm.mailValid = true;
     //submit.disabled = false;
     document.querySelector('#emailErrorMsg').textContent = "✅";
     let error = document.querySelector('#email');
@@ -309,7 +315,17 @@ submit.setAttribute('method', 'POST');
 
 submit.addEventListener('click', (e) => {
   e.preventDefault();
+
   if (validationForm.firstNameValid == true && validationForm.lastNameValid == true && validationForm.adressValid == true && validationForm.cityValid == true && validationForm.mailValid == true) {
+
+
+    let productsId = [];
+
+    for (let prod of JSON.parse(localStorage.getItem("produits"))) {
+
+      productsId.push(prod.id)
+    };
+
 
 
     let order = {
@@ -320,11 +336,13 @@ submit.addEventListener('click', (e) => {
         city: document.querySelector('#city').value,
         email: document.querySelector('#email').value,
       },
-      produits: localStorage.getItem("produits")
+      products: productsId
     };
 
 
 
+
+    console.log("Petit message ", order);
     fetch(`http://localhost:3000/api/products/order`, {
         method: "POST",
         body: JSON.stringify(order),
@@ -332,7 +350,7 @@ submit.addEventListener('click', (e) => {
         headers: {
           "Content-Type": "application/json",
           'Accept': 'application/json',
-          'origin': '*'
+
         },
 
       })
@@ -341,30 +359,31 @@ submit.addEventListener('click', (e) => {
         return res.json()
       })
       .then((data => {
+        console.log("Reponse de la requete", data);
 
 
-        console.log(data);
+        location.replace(`confirmation.html?orderId=${data.orderId}`)
 
-        `<a href="../confirmation.js" "target="_blank" ><div class="confirmation">
-         <p>Commande validée !!!  Toutes nos félicitations  !!! <br>Votre numéro de commande est : <span id="orderId">${data}</span></p>
-       </div>
 
-      </div></a>
-           `
+
       }))
       .catch((err) => {
         alert(" une erreur est survenue :( : " + err);
       });
 
-  } else if (validationForm.firstNameValid == false || validationForm.lastNameValid == false || validationForm.adressValid == false || validationForm.cityValid == false || validationForm.mailValid == false) {
+    let el = document.createElement('div');
+    el.innerHTML = "";
 
-    document.querySelector("#order").disabled = true;
+  } else {
 
-    let el = document.createElement('p');
-    let el2 = document.querySelector('.cart__order__form__question');
+    //document.querySelector("#order").disabled = true;
+
+    let el = document.createElement('div');
+    let el2 = document.querySelector('.cart__order__form');
     el2.appendChild(el);
     el.classList.add('error');
     el.style.color = 'red';
+    el.style.padding = "top : 15px";
     el.innerHTML = "Merci de bien vouloir remplir tout les champs s'il vous plaît ";
   }
 
