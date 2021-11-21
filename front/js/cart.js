@@ -52,11 +52,14 @@ for (let p of produitsDansPanier) {
     })
     .then(response => {
 
-      document.querySelector(".cart__price").innerHTML += `
-                               <p>Total (<span id="totalQuantity">${p.quantity}               
-                                </span> articles) : <span id="totalPrice"> ${response.price * p.quantity} </span> €</p>
-                             `
+      document.querySelector(".cart__price").addEventListener('change', (e) => {
+        e.target.value = p.quantity;
+      })
 
+      document.querySelector(".cart__price").innerHTML += `
+      <p>Total (<span id="totalQuantity">${p.quantity}               
+       </span> articles) : <span id="totalPrice"> ${response.price * p.quantity} </span> €</p>
+    `
     })
 
 }
@@ -119,8 +122,6 @@ function changeQuantity(event, id, color) {
   }
   localStorage.setItem("produits", JSON.stringify(panierContent));
 
-  document.querySelectorAll('#totalQuantity').textContent =
-    `<p>Total (<span id="totalQuantity">${produitsDansPanier[p].quantity} </span> `
 }
 
 
