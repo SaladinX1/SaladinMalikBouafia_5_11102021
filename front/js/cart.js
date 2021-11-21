@@ -1,5 +1,8 @@
 // requête fetch pour récupérer les données manquantes pour affichage panier 
 
+
+
+
 let produitsDansPanier = JSON.parse(localStorage.getItem("produits"));
 
 for (let p = 0; p < produitsDansPanier.length; p++) {
@@ -16,25 +19,25 @@ for (let p = 0; p < produitsDansPanier.length; p++) {
                  <section id="cart__items">
                    <article class="cart__item" data-id="${produitsDansPanier[p].id}">
                      <div class="cart__item__img">
-                      <img src="${response.imageUrl}" alt="${response.altTxt}"/>
+                       <img src="${response.imageUrl}" alt="${response.altTxt}"/>
                      </div>
-                    <div class="cart__item__content">
-                   <div class="cart__item__content__titlePrice">
-                    <h2>${response.name}</h2>
-                      <p>${response.price * produitsDansPanier[p].quantity} €</p>
-                   </div>
-                    <div class="cart__item__content__settings">
-                      <div class="cart__item__content__settings__quantity">
-                        <p>Qté : </p>
-                     <input type="number" class="itemQuantity"  name="itemQuantity" min="1" max="100" onchange='changeQuantity(event , "${produitsDansPanier[p].id}" , "${produitsDansPanier[p].color}" )'  value="${produitsDansPanier[p].quantity}">
-                      </div>
-                          <div class="cart__item__content__settings__delete">
-                            <p class="deleteItem" onclick='deleteItem(event , "${produitsDansPanier[p].id}" , "${produitsDansPanier[p].color}" ), deleteItemLocalStorage()' >Supprimer</p>
-                         </div>
-                          </div>
-                              </div>
-                                </article>  
-                                     </section>     `
+                     <div class="cart__item__content">
+                       <div class="cart__item__content__titlePrice">
+                         <h2>${response.name}</h2>
+                         <p>${response.price * produitsDansPanier[p].quantity} €</p>
+                       </div>
+                     <div class="cart__item__content__settings">
+                       <div class="cart__item__content__settings__quantity">
+                         <p>Qté : </p>
+                         <input type="number" class="itemQuantity"  name="itemQuantity" min="1" max="100" onchange='changeQuantity(event , "${produitsDansPanier[p].id}" , "${produitsDansPanier[p].color}" )'  value="${produitsDansPanier[p].quantity}">
+                       </div>
+                     <div class="cart__item__content__settings__delete">
+                       <p class="deleteItem" onclick='deleteItem(event , "${produitsDansPanier[p].id}" , "${produitsDansPanier[p].color}" ), deleteItemLocalStorage()' >Supprimer</p>
+                     </div>
+                     </div>
+                     </div>
+                  </article>  
+                 </section>     `
 
 
     })
@@ -310,23 +313,28 @@ submit.addEventListener('click', (e) => {
       products: productsId
     };
 
-    fetch(`http://localhost:3000/api/products/order`, {
-        method: "POST",
-        body: JSON.stringify(order),
-        headers: {
-          "Content-Type": "application/json",
-          'Accept': 'application/json',
-        },
-      })
-      .then(res => {
-        return res.json()
-      })
-      .then((data => {
-        location.replace(`confirmation.html?orderId=${data.orderId}`)
-      }))
-      .catch((err) => {
-        alert(" une erreur est survenue :( : " + err);
-      });
+
+    function getOrderId(url) {
+
+      fetch(`${url}`, {
+          method: "POST",
+          body: JSON.stringify(order),
+          headers: {
+            "Content-Type": "application/json",
+            'Accept': 'application/json',
+          },
+        })
+        .then(res => {
+          return res.json()
+        })
+        .then((data => {
+          location.replace(`confirmation.html?orderId=${data.orderId}`)
+        }))
+        .catch((err) => {
+          alert(" une erreur est survenue :( : " + err);
+        });
+    }
+
 
     let el = document.createElement('div');
     el.innerHTML = "";
@@ -341,4 +349,7 @@ submit.addEventListener('click', (e) => {
     el.style.padding = "top : 15px";
     el.innerHTML = "Merci de bien vouloir remplir tout les champs s'il vous plaît ";
   }
+
+  getOrderId('http://localhost:3000/api/products/order');
+
 });

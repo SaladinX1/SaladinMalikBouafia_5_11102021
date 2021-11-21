@@ -9,31 +9,36 @@ const id = urlSearchParams.get('id');
 
 // Récupération des articles par leur ID Pour pour afficher de manière dinamique la page Produit
 
+function getProductById(url, id) {
 
-fetch(`http://localhost:3000/api/products/${id}`)
-   .then(data => {
+   fetch(`${url}/${id}`)
+      .then(data => {
 
-      return data.json();
-   })
+         return data.json();
+      })
 
-   .then(response => {
+      .then(response => {
 
-      document.querySelector("#title").textContent = response.name;
-      document.querySelector(".item__img").innerHTML = `<img src="${response.imageUrl}" alt="${response.altTxt}"/>`;
-      document.querySelector("#price").textContent = response.price;
-      document.querySelector("#description").textContent = response.description;
+         document.querySelector("#title").textContent = response.name;
+         document.querySelector(".item__img").innerHTML = `<img src="${response.imageUrl}" alt="${response.altTxt}"/>`;
+         document.querySelector("#price").textContent = response.price;
+         document.querySelector("#description").textContent = response.description;
 
-      let colorOption = " ";
+         let colorOption = " ";
 
-      for (let color of response.colors) {
+         for (let color of response.colors) {
 
-         colorOption += `<option value="${color}">${color}</option> `
+            colorOption += `<option value="${color}">${color}</option> `
 
-      };
+         };
 
-      document.querySelector("#colors").innerHTML = colorOption;
+         document.querySelector("#colors").innerHTML = colorOption;
 
-   });
+      });
+
+
+}
+getProductById('http://localhost:3000/api/products', id);
 
 // selection de quantité produit inférieur à 1
 
