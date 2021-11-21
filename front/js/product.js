@@ -113,7 +113,7 @@ panier.addEventListener('click', function (e) {
       }
 
 
-      // Verifie si le produit n'est pas déjà existant dans le localStorage
+      // Verifie si le produit n'est pas déjà existant dans le LocalStorage
 
       if (productExist == false) {
 
@@ -126,6 +126,8 @@ panier.addEventListener('click', function (e) {
          localStorage.setItem("produits", JSON.stringify(panierContent));
       }
 
+
+
    } else {
 
       let produit = {
@@ -135,5 +137,8 @@ panier.addEventListener('click', function (e) {
       };
       stockageProduit = [produit];
       localStorage.setItem("produits", JSON.stringify(stockageProduit));
-   };
+
+   }
+
+   ;
 });

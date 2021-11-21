@@ -35,25 +35,26 @@ for (let p = 0; p < produitsDansPanier.length; p++) {
                               </div>
                                 </article>  
                                      </section>     `
+
+
     })
-
-
-
 }
+
+
 
 // Affichage du total produit et prix total
 
-for (let p = 0; p < produitsDansPanier.length; p++) {
+for (let p of produitsDansPanier) {
 
-  fetch(`http://localhost:3000/api/products/${produitsDansPanier[p].id}`)
+  fetch(`http://localhost:3000/api/products/${p.id}`)
     .then(data => {
       return data.json();
     })
     .then(response => {
 
       document.querySelector(".cart__price").innerHTML += `
-                               <p>Total (<span id="totalQuantity">${produitsDansPanier[p].quantity}               
-                                </span> articles) : <span id="totalPrice"> ${response.price * produitsDansPanier[p].quantity} </span> €</p>
+                               <p>Total (<span id="totalQuantity">${p.quantity}               
+                                </span> articles) : <span id="totalPrice"> ${response.price * p.quantity} </span> €</p>
                              `
 
     })
@@ -134,7 +135,7 @@ let nom = document.querySelector('#lastName');
 nom.setAttribute("pattern", "^[a-zA-Z]+[^0-9]");
 
 let address = document.querySelector('#address');
-address.setAttribute("max-length", "60");
+address.setAttribute("pattern", "[a-zA-Z0-9 èàç-é,]");
 
 let city = document.querySelector('#city');
 city.setAttribute("pattern", "^[a-zA-Z]+[^0-9]");
@@ -198,7 +199,7 @@ document.querySelector('#lastName').addEventListener('change', (e) => {
 document.querySelector('#address').addEventListener('change', (e) => {
   let address = e.target.value;
 
-  if (address == "") {
+  if (address == /[a-zA-Z0-9 èàç-é,]/) {
 
 
     validationForm.adressValid = false;
