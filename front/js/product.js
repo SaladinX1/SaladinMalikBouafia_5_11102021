@@ -129,6 +129,8 @@ panier.addEventListener('click', function (e) {
          };
          panierContent.push(produit);
          localStorage.setItem("produits", JSON.stringify(panierContent));
+         alert('Votre produit a bien été ajoutée au panier 🙂');
+
       }
 
 
@@ -142,7 +144,7 @@ panier.addEventListener('click', function (e) {
       };
       stockageProduit = [produit];
       localStorage.setItem("produits", JSON.stringify(stockageProduit));
-
+      alert('Votre produit a bien été ajoutée au panier 🙂');
    }
 
    ;
