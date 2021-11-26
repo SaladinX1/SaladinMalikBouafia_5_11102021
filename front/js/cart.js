@@ -1,8 +1,6 @@
 // requête fetch pour récupérer les données manquantes pour affichage panier 
 
 
-
-
 let produitsDansPanier = JSON.parse(localStorage.getItem("produits"));
 
 for (let p = 0; p < produitsDansPanier.length; p++) {
@@ -24,7 +22,9 @@ for (let p = 0; p < produitsDansPanier.length; p++) {
                      <div class="cart__item__content">
                        <div class="cart__item__content__titlePrice">
                          <h2>${response.name}</h2>
+                         <p>${produitsDansPanier[p].color}</p>
                          <p>${response.price * produitsDansPanier[p].quantity} €</p>
+                     
                        </div>
                      <div class="cart__item__content__settings">
                        <div class="cart__item__content__settings__quantity">
@@ -57,6 +57,7 @@ for (let p of produitsDansPanier) {
 
       document.querySelector(".cart__price").addEventListener('change', (e) => {
         e.target.value = p.quantity;
+
       })
 
       document.querySelector(".cart__price").innerHTML += `
@@ -74,7 +75,7 @@ function deleteItem(event, id, color) {
   let deleteDiv = event.target.closest('section section');
 
   deleteDiv.remove();
-  // supression de l'article dans le LocalStorage
+
   let listeProduit = JSON.parse(localStorage.getItem("produits"));
 
   for (let i = 0; i < listeProduit.length; i++) {
@@ -124,6 +125,7 @@ function changeQuantity(event, id, color) {
     }
   }
   localStorage.setItem("produits", JSON.stringify(panierContent));
+  location.reload();
 
 }
 
